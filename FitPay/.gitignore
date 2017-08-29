@@ -1,0 +1,7 @@
+/target/
+*.html
+*.gif
+*.png
+/test-output/
+/bin/
+/.settings/
