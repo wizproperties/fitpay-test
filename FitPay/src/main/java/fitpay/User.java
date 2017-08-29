@@ -75,7 +75,7 @@ public class User {
 		rtn.append("ID: " + getId())
 			.append("\n")
 			.append("Created: "+ getCreatedDateTime().getTime())
-			.append("Created: "+ getLastModifiedDateTime().getTime())
+			.append(" Created: "+ getLastModifiedDateTime().getTime())
 			;
 		return rtn.toString();
 	}

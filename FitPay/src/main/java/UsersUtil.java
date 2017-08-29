@@ -30,15 +30,16 @@ public final class UsersUtil {
 	        final JSONObject jsonUser = jsonArray.getJSONObject(i);
 	        System.out.println(jsonUser.getString("id"));
 	        
-	        int createdTSEpoch = jsonUser.getInt("createdTsEpoch");
+	        long createdTSEpoch = jsonUser.getLong("createdTsEpoch");
 	        Calendar createdTime = Calendar.getInstance();
 	        createdTime.setTimeInMillis(createdTSEpoch);
 	        
-	        int lastModTSEpoch = jsonUser.getInt("createdTsEpoch");
+	        long	 lastModTSEpoch = jsonUser.getLong("createdTsEpoch");
 	        Calendar lastModTime = Calendar.getInstance();
 	        lastModTime.setTimeInMillis(lastModTSEpoch);
 	        
-	        String encryptedData = jsonUser.getJSONArray("encryptedData").getJSONObject(0).getString("encryptedDataSkipped");
+//	        String encryptedData = jsonUser.getJSONArray("encryptedData").getJSONObject(0).getString("encryptedDataSkipped");
+	        String encryptedData = jsonUser.getJSONObject("encryptedData").getString("encryptedDataSkipped");
 	        
 	        User user = new User();
 	        user.setId(jsonUser.getString("id"));
