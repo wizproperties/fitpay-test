@@ -1,9 +1,9 @@
-package main.java;
+package java;
+
+import java.fitpay.User;
+import java.fitpay.UsersJSON;
 
 import org.json.simple.JSONObject;
-
-import main.java.fitpay.User;
-import main.java.fitpay.UsersJSON;
 
 /**
  * The UsersUtil class provides basic  utility methods and JSON mappings for the User class

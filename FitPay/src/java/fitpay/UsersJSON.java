@@ -1,4 +1,4 @@
-package main.java.fitpay;
+package java.fitpay;
 
 /**
  * @author benwisinski
