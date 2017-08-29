@@ -19,15 +19,15 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * The Util class provides basic utility methods for FitPay API Usage
+ * The ConnectionUtil class provides basic connection utility methods for FitPay API Usage
  * @author benwisinski
  */
-public final class Util {
+public final class ConnectionUtil {
 
 	private static final String PRIVATE_TOKEN = "eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJhN2EwYWIzNi02MjhjLTRlMGYtYmY1Yy1jZjcyYmRiMWE2ZGYiLCJzdWIiOiI2bktvMW1DQSIsImF1dGhvcml0aWVzIjpbInVzZXIucmVhZCIsInVzZXIud3JpdGUiLCJvcmdhbml6YXRpb25zLkVOR1RFU1QiLCJ1c2Vycy5yZWFkIiwidXNlcnMud3JpdGUiXSwic2NvcGUiOlsidXNlci5yZWFkIiwidXNlci53cml0ZSIsIm9yZ2FuaXphdGlvbnMuRU5HVEVTVCIsInVzZXJzLnJlYWQiLCJ1c2Vycy53cml0ZSJdLCJjbGllbnRfaWQiOiI2bktvMW1DQSIsImNpZCI6IjZuS28xbUNBIiwiYXpwIjoiNm5LbzFtQ0EiLCJncmFudF90eXBlIjoiY2xpZW50X2NyZWRlbnRpYWxzIiwicmV2X3NpZyI6Ijk1YzM5YzdiIiwiaWF0IjoxNTAzOTU2ODM2LCJleHAiOjE1MDQwMDAwMzYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC91YWEvb2F1dGgvdG9rZW4iLCJ6aWQiOiJ1YWEiLCJhdWQiOlsiNm5LbzFtQ0EiLCJ1c2VyIiwib3JnYW5pemF0aW9ucyIsInVzZXJzIl19.vInLk3JXLDxIP2UbYfnLD_OG1a2Nh4SdAqmNze5dEqkkMQEC5obaqz6tiUWdRmCSCZH2cNGjE6fOcnBkqzqOkyXSf7p6-ZIDIUjAvaqydpAd_C-4cmsRgR9Ky8su1-EzVTOI2M-TI5B09LUfcA_yEHNua-SppBvktujBT-Sr10wkv1msKttQd7Lg-0-02mhW7eZCWaUVNz-hKY5bEguG17xMSJfa4OPVSDXQI8umIhkE6N_HdORYpB0ojEbxay7RI51IIVTu4mL93W-QVEQ3fj_P0PC8t9HuOoYFd1_tlsMONCIx4Bnu-b2VXUL43jSnpGsFHGqsfDxMnbIRRkloAg";
 	private static SSLSocketFactory sslSocketFactory = null;
 	
-	private Util() {
+	private ConnectionUtil() {
 		super();
 		//setting this as private to prevent accidental util instantiations
 	}
