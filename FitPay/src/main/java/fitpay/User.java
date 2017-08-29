@@ -1,7 +1,7 @@
 /**
  * 
  */
-package java.fitpay;
+package main.java.fitpay;
 
 import java.util.Calendar;
 
