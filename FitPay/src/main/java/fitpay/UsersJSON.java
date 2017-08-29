@@ -61,5 +61,16 @@ public class UsersJSON {
 		this.users = users;
 	}
 	
+	/**
+	 * Simple method that returns the length of the users array in this json object
+	 * @return int length of the users array, or 0 if null
+	 */
+	private int getUsersCount() {
+		if (this.users != null) {
+			return this.users.length;
+		}
+		return 0;
+	}
+	
 
 }
