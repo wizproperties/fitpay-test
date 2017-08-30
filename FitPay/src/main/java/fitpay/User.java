@@ -77,6 +77,9 @@ public class User {
 			.append("Created: "+ getCreatedDateTime().getTime())
 			.append(" Created: "+ getLastModifiedDateTime().getTime())
 			;
+		if (getEncryptedData() !=null) {
+			rtn.append("\nEncrypted Data: "+getEncryptedData());
+		}
 		return rtn.toString();
 	}
 	

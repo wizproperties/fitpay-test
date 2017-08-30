@@ -7,6 +7,14 @@ package main.java.fitpay;
  */
 public class UsersJSON {
 	
+	public UsersJSON(int limit, int offset, int totalResults, User[] users) {
+		super();
+		this.limit = limit;
+		this.offset = offset;
+		this.totalResults = totalResults;
+		this.users = users;
+	}
+
 	private int limit;
 	private int offset;
 	private int totalResults;

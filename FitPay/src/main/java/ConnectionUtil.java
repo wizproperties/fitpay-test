@@ -1,6 +1,8 @@
 package main.java;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,6 +42,50 @@ public final class ConnectionUtil {
 //	}
 	
 	/**
+	 * Instead of using the https connection, this will simply grab json data from the included sample.json file. 
+	 * In case you want to run tests against reusable data or against just the json parser
+	 * @return
+	 */
+	public static String getJSONfromSampleFile() {
+		 // The name of the file to open.
+        String fileName = "../../../sample.json";
+        StringBuilder resultJSON =new StringBuilder();
+
+        // This will reference one line at a time
+        String line = null;
+
+        try {
+            // FileReader reads text files in the default encoding.
+            FileReader fileReader = 
+                new FileReader(fileName);
+
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader = 
+                new BufferedReader(fileReader);
+
+            while((line = bufferedReader.readLine()) != null) {
+                resultJSON.append(line);
+            }   
+
+            // Always close files.
+            bufferedReader.close();         
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println(
+                "Unable to open file '" + 
+                fileName + "'");                
+        }
+        catch(IOException ex) {
+            System.out.println(
+                "Error reading file '" 
+                + fileName + "'");                  
+            // Or we could just do this: 
+            // ex.printStackTrace();
+        }
+        return resultJSON.toString();
+    }
+	
+	/**
 	 * Establishes a connection to the API via the passed in endpoint, and returns the server response JSON
 	 * @param endpoint optional endpoint for API
 	 * @param params optoinal params list for endpoint, & seperated, with no ?
@@ -50,57 +96,59 @@ public final class ConnectionUtil {
 	 * @throws Exception HttpErrorExceptionCustom if the server gave a response error
 	 */
 	public static String establishConnectionAndGetDataString(String endpoint, String params) throws KeyManagementException, NoSuchAlgorithmException, IOException, Exception {
-		// I know these exception types are spooling, but this makes it more readable
-		System.out.println("getconnection method");
+		// I know these exception types are spooling, but this makes it more readable IMHO
 		
 		//	Base curl call, for my reference:
 		// curl -s --insecure -H "Authorization: Bearer TOKEN" https://api.qa.fitpay.ninja/users?limit=10
-		
-			String fitpayBaseURL = "https://api.qa.fitpay.ninja"; //base uri
-			String fitpayEndpoint = "/users"; //endpoint default
-			if (endpoint != null) {
-				fitpayEndpoint = endpoint;
+
+		//setup request URI
+		String fitpayBaseURL = "https://api.qa.fitpay.ninja"; //base uri
+		String fitpayEndpoint = "/users"; //endpoint default
+		if (endpoint != null) {
+			fitpayEndpoint = endpoint;
+		}
+		String fitpayArgs = "?limit=10"; //params default
+		if (params != null) {
+			fitpayArgs = "?" + params;
+		}
+		String fitpayURL = fitpayBaseURL.concat(fitpayEndpoint).concat(fitpayArgs);
+
+		//setup connection
+		URL url = new URL (fitpayURL);
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		setAcceptAllVerifier((HttpsURLConnection)connection);
+		connection.setRequestMethod("GET");
+		connection.setDoOutput(true);
+		connection.setRequestProperty  ("Authorization", "Bearer " + PRIVATE_TOKEN);
+
+		//handle response
+		StringBuilder responseStrBuilder = new StringBuilder();
+		//check for errors in response, and throw custom exception if so
+		if ((InputStream)connection.getErrorStream() != null ) {
+			System.out.println("There were errors in the request");
+			InputStream content = (InputStream)connection.getErrorStream();
+			BufferedReader in   = 
+					new BufferedReader (new InputStreamReader (content));
+			String line;
+			while ((line = in.readLine()) != null) {
+				//	                    System.out.println(line);
+				responseStrBuilder.append(line);
 			}
-			String fitpayArgs = "?limit=10"; //params default
-			if (params != null) {
-				fitpayArgs = "?" + params;
-			}
-			String fitpayURL = fitpayBaseURL.concat(fitpayEndpoint).concat(fitpayArgs);
-			
-			URL url = new URL (fitpayURL);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            setAcceptAllVerifier((HttpsURLConnection)connection);
-            connection.setRequestMethod("GET");
-            connection.setDoOutput(true);
-            connection.setRequestProperty  ("Authorization", "Bearer " + PRIVATE_TOKEN);
-            
-            StringBuilder responseStrBuilder = new StringBuilder();
-            //check for errors in response, and throw custom exception if so
-            if ((InputStream)connection.getErrorStream() != null ) {
-            		System.out.println("There were errors in the request");
-	            	InputStream content = (InputStream)connection.getErrorStream();
-	                BufferedReader in   = 
-	                    new BufferedReader (new InputStreamReader (content));
-	                String line;
-	                while ((line = in.readLine()) != null) {
-//	                    System.out.println(line);
-	                    responseStrBuilder.append(line);
-	                }
-	                Exception HttpErrorExceptionCustom = new Exception(responseStrBuilder.toString());
-	                throw HttpErrorExceptionCustom;
-            }
-            
-            // if no errors in response, try to read in stream
-            InputStream content = (InputStream)connection.getInputStream();
-            BufferedReader in   = 
-                new BufferedReader (new InputStreamReader (content));
-            String line;
-            while ((line = in.readLine()) != null) {
-                System.out.println(line);
-                responseStrBuilder.append(line);
-            }
-            
-           return responseStrBuilder.toString();
+			Exception HttpErrorExceptionCustom = new Exception(responseStrBuilder.toString());
+			throw HttpErrorExceptionCustom;
+		}
+
+		// if no errors in response, try to read in stream
+		InputStream content = (InputStream)connection.getInputStream();
+		BufferedReader in   = 
+				new BufferedReader (new InputStreamReader (content));
+		String line;
+		while ((line = in.readLine()) != null) {
+			//                System.out.println(line);
+			responseStrBuilder.append(line);
+		}
+
+		return responseStrBuilder.toString();
 
 	}
 	

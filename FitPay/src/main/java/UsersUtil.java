@@ -20,15 +20,22 @@ public final class UsersUtil {
 		//setting this as private to prevent accidental util instantiations
 	}
 	
-	
+	/**
+	 * Pulls User objects out of a raw JSON string
+	 * @param json input
+	 * @return User[] from the input json
+	 */
 	public static User[] convertJSONtoUsers(String json) {
-		ArrayList<User> rtn = new ArrayList<User>();
+		ArrayList<User> rtn = null;
 		
 		JSONObject obj = new JSONObject(json);
 		JSONArray jsonArray = obj.getJSONArray("results");
+		if (jsonArray != null) {
+			rtn = new ArrayList<User>();
+		
 	    for (int i = 0; i < jsonArray.length(); ++i) {
 	        final JSONObject jsonUser = jsonArray.getJSONObject(i);
-	        System.out.println(jsonUser.getString("id"));
+//	        System.out.println(jsonUser.getString("id"));
 	        
 	        long createdTSEpoch = jsonUser.getLong("createdTsEpoch");
 	        Calendar createdTime = Calendar.getInstance();
@@ -47,18 +54,34 @@ public final class UsersUtil {
 	        user.setLastModifiedDateTime(lastModTime);
 	        user.setEncryptedData(encryptedData);
 	        
-	        System.out.println(user.toString());
-	        System.out.println();
+//	        System.out.println(user.toString());
+//	        System.out.println();
 	        
 	        rtn.add(user);
 	        
 	    }
-	    
-		return (User[]) rtn.toArray();
+		}
+	    if (rtn != null && !rtn.isEmpty()) return rtn.toArray(new User[rtn.size()]);
+	    else return null;
 	}
 	
+	/**
+	 * Populates all members of the UsersJSON class via parsing the passed in json object
+	 * @param json input
+	 * @return UsersJSON object with all member variables populated
+	 */
 	public static UsersJSON convertJSONtoUsersJSON(String json) {
-		return null; //TODO
+		
+		JSONObject obj = new JSONObject(json);
+		if (obj != null) {
+			int limit = obj.getInt("limit");
+			int offset = obj.getInt("offset");
+			int totalResults = obj.getInt("totalResults");
+
+			UsersJSON rtn = new UsersJSON (limit, offset, totalResults, convertJSONtoUsers(json));
+			return rtn;
+		}
+		else return null; //eclipse says this is dead code, which should be true, but there isnt great documentation on the JSONObject constructor, so I'm leaving it in
 	}
 	
 }
