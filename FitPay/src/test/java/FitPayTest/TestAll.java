@@ -1,5 +1,6 @@
 package test.java.FitPayTest;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
@@ -13,11 +14,15 @@ import main.java.fitpay.User;
 import main.java.fitpay.UsersJSON;
 
 
-public class Test1 {
+public class TestAll {
 	
 //	In case you want to run tests against reusable data or against just the json parser
 	private final boolean useLiveConnection = true; //if set to false, tests will use the sample.json file instead
 	public static String JSONdata = null;
+	private static final int PASSED_LIMIT = 10;
+	private static final int PASSED_OFFSET = 0;
+	private static final String LIMIT_STRING = "?limit="+PASSED_LIMIT;
+	private static final String OFFSET_STRING = "&offset="+PASSED_OFFSET;
 
 	/**
 	 * Tests URL connection (regardless of useLiveConnection flag), token, and https call and response structure.
@@ -28,7 +33,7 @@ public class Test1 {
 	public void testConnection() {
 		String data=null;  
 		try {
-			  data = ConnectionUtil.establishConnectionAndGetDataString(null, null);
+			  data = ConnectionUtil.establishConnectionAndGetDataString(null, LIMIT_STRING+OFFSET_STRING);
 		  }
 		  catch (Exception e) {
 			  assertTrue(false, "An Exception Happened in the connection: "+e.getMessage());
@@ -41,12 +46,26 @@ public class Test1 {
 	 */
 	@Test
 	public void testDataParsing() {
-		System.out.println("running test2");
 		UsersJSON usersJson = UsersUtil.convertJSONtoUsersJSON(JSONdata);
 		assertNotNull(usersJson);
 		User[] users = UsersUtil.convertJSONtoUsers(JSONdata);
 		assertNotNull(users);
-
+	}
+	
+	@Test
+	public void testUsersEndpointBasics() {
+		UsersJSON usersJson = UsersUtil.convertJSONtoUsersJSON(JSONdata);
+//		assertNotNull(usersJson);
+//		User[] users = UsersUtil.convertJSONtoUsers(JSONdata);
+//		assertNotNull(users);
+		
+		//test limit, hardcoding to 10 because thats what the default is set to
+		assertEquals(usersJson.getLimit(), PASSED_LIMIT);
+		assertEquals(usersJson.getUsers().length, PASSED_LIMIT);
+		
+		//test	offset
+		assertEquals(usersJson.getOffset(), PASSED_OFFSET);
+		
 	}
 
 	/**
