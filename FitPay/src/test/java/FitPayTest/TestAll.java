@@ -18,7 +18,7 @@ public class TestAll {
 	
 //	In case you want to run tests against reusable data or against just the json parser
 	private final boolean useLiveConnection = true; //if set to false, tests will use the sample.json file instead
-	public static String JSONdata = null;
+	public static String JSONdata = null; 
 	private static final int PASSED_LIMIT = 10;
 	private static final int PASSED_OFFSET = 0;
 	private static final String LIMIT_STRING = "?limit="+PASSED_LIMIT;
@@ -47,21 +47,26 @@ public class TestAll {
 	@Test
 	public void testDataParsing() {
 		UsersJSON usersJson = UsersUtil.convertJSONtoUsersJSON(JSONdata);
-		assertNotNull(usersJson);
+		assertNotNull(usersJson); //test that the metadata got populated
 		User[] users = UsersUtil.convertJSONtoUsers(JSONdata);
-		assertNotNull(users);
+		assertNotNull(users); //that that users were found/populated
 	}
 	
+	/**
+	 * Basic tests against some of the accessible data in the /users endpoint. 
+	 */
 	@Test
 	public void testUsersEndpointBasics() {
 		UsersJSON usersJson = UsersUtil.convertJSONtoUsersJSON(JSONdata);
-//		assertNotNull(usersJson);
-//		User[] users = UsersUtil.convertJSONtoUsers(JSONdata);
-//		assertNotNull(users);
+		assertNotNull(usersJson); //test that the metadata got populated
+		User[] users = UsersUtil.convertJSONtoUsers(JSONdata);
+		assertNotNull(users); //that that users were found/populated
 		
-		//test limit, hardcoding to 10 because thats what the default is set to
+		//test limit and returns
 		assertEquals(usersJson.getLimit(), PASSED_LIMIT);
 		assertEquals(usersJson.getUsers().length, PASSED_LIMIT);
+		assertEquals(usersJson.getUsersCount(), PASSED_LIMIT);
+		
 		
 		//test	offset
 		assertEquals(usersJson.getOffset(), PASSED_OFFSET);

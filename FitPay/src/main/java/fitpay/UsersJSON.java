@@ -7,6 +7,18 @@ package main.java.fitpay;
  */
 public class UsersJSON {
 	
+	private int limit;
+	private int offset;
+	private int totalResults;
+	private User[] users;
+	
+	/**
+	 * Basic constructor with all members
+	 * @param limit
+	 * @param offset
+	 * @param totalResults
+	 * @param users
+	 */
 	public UsersJSON(int limit, int offset, int totalResults, User[] users) {
 		super();
 		this.limit = limit;
@@ -14,11 +26,6 @@ public class UsersJSON {
 		this.totalResults = totalResults;
 		this.users = users;
 	}
-
-	private int limit;
-	private int offset;
-	private int totalResults;
-	private User[] users;
 	
 	/**
 	 * @return the limit
@@ -73,7 +80,7 @@ public class UsersJSON {
 	 * Simple method that returns the length of the users array in this json object
 	 * @return int length of the users array, or 0 if null
 	 */
-	private int getUsersCount() {
+	public int getUsersCount() {
 		if (this.users != null) {
 			return this.users.length;
 		}

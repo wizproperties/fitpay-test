@@ -34,13 +34,6 @@ public final class ConnectionUtil {
 		//setting this as private to prevent accidental util instantiations
 	}
 
-	//for my testing
-//	public static void main(String[] args) {
-//		// TODO Auto-generated method stub
-//		Util.getConnection();
-//
-//	}
-	
 	/**
 	 * Instead of using the https connection, this will simply grab json data from the included sample.json file. 
 	 * In case you want to run tests against reusable data or against just the json parser
@@ -50,24 +43,18 @@ public final class ConnectionUtil {
 		 // The name of the file to open.
         String fileName = "../../../sample.json";
         StringBuilder resultJSON =new StringBuilder();
-
-        // This will reference one line at a time
         String line = null;
 
         try {
-            // FileReader reads text files in the default encoding.
             FileReader fileReader = 
                 new FileReader(fileName);
 
-            // Always wrap FileReader in BufferedReader.
             BufferedReader bufferedReader = 
                 new BufferedReader(fileReader);
 
             while((line = bufferedReader.readLine()) != null) {
                 resultJSON.append(line);
             }   
-
-            // Always close files.
             bufferedReader.close();         
         }
         catch(FileNotFoundException ex) {
@@ -79,8 +66,6 @@ public final class ConnectionUtil {
             System.out.println(
                 "Error reading file '" 
                 + fileName + "'");                  
-            // Or we could just do this: 
-            // ex.printStackTrace();
         }
         return resultJSON.toString();
     }
@@ -154,11 +139,11 @@ public final class ConnectionUtil {
 	
 	
 	/* The following is code that I got from a SO result on how to disable SSL for java. There might be a better way to do this, but I figured this would work OK for a POC  - benwisinski */
-	
-	
 	/**
      * Overrides the SSL TrustManager and HostnameVerifier to allow
      * all certs and hostnames.
+     * I modified this method slightly so that it threw instead of caught exceptions - benwisinki
+     * 
      * WARNING: This should only be used for testing, or in a "safe" (i.e. firewalled)
      * environment.
      * 

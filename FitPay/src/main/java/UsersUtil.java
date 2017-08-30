@@ -21,7 +21,7 @@ public final class UsersUtil {
 	}
 	
 	/**
-	 * Pulls User objects out of a raw JSON string
+	 * Pulls User objects out of a raw JSON string from /users
 	 * @param json input
 	 * @return User[] from the input json
 	 */
@@ -34,8 +34,7 @@ public final class UsersUtil {
 			rtn = new ArrayList<User>();
 		
 	    for (int i = 0; i < jsonArray.length(); ++i) {
-	        final JSONObject jsonUser = jsonArray.getJSONObject(i);
-//	        System.out.println(jsonUser.getString("id"));
+	        JSONObject jsonUser = jsonArray.getJSONObject(i);
 	        
 	        long createdTSEpoch = jsonUser.getLong("createdTsEpoch");
 	        Calendar createdTime = Calendar.getInstance();
@@ -45,7 +44,6 @@ public final class UsersUtil {
 	        Calendar lastModTime = Calendar.getInstance();
 	        lastModTime.setTimeInMillis(lastModTSEpoch);
 	        
-//	        String encryptedData = jsonUser.getJSONArray("encryptedData").getJSONObject(0).getString("encryptedDataSkipped");
 	        String encryptedData = jsonUser.getJSONObject("encryptedData").getString("encryptedDataSkipped");
 	        
 	        User user = new User();
@@ -53,9 +51,6 @@ public final class UsersUtil {
 	        user.setCreatedDateTime(createdTime);
 	        user.setLastModifiedDateTime(lastModTime);
 	        user.setEncryptedData(encryptedData);
-	        
-//	        System.out.println(user.toString());
-//	        System.out.println();
 	        
 	        rtn.add(user);
 	        
