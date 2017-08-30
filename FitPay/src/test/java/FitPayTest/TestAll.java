@@ -15,8 +15,8 @@ import main.java.fitpay.UsersJSON;
 
 
 public class TestAll {
-	
-//	In case you want to run tests against reusable data or against just the json parser
+
+	//	In case you want to run tests against reusable data or against just the json parser
 	private final boolean useLiveConnection = true; //if set to false, tests will use the sample.json file instead
 	public static String JSONdata = null; 
 	private static final int PASSED_LIMIT = 10;
@@ -33,12 +33,12 @@ public class TestAll {
 	public void testConnection() {
 		String data=null;  
 		try {
-			  data = ConnectionUtil.establishConnectionAndGetDataString(null, LIMIT_STRING+OFFSET_STRING);
-		  }
-		  catch (Exception e) {
-			  assertTrue(false, "An Exception Happened in the connection: "+e.getMessage());
-		  }
-		  assertNotNull(data);
+			data = ConnectionUtil.establishConnectionAndGetDataString(null, LIMIT_STRING+OFFSET_STRING);
+		}
+		catch (Exception e) {
+			assertTrue(false, "An Exception Happened in the connection: "+e.getMessage());
+		}
+		assertNotNull(data);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class TestAll {
 		User[] users = UsersUtil.convertJSONtoUsers(JSONdata);
 		assertNotNull(users); //that that users were found/populated
 	}
-	
+
 	/**
 	 * Basic tests against some of the accessible data in the /users endpoint. 
 	 */
@@ -61,16 +61,16 @@ public class TestAll {
 		assertNotNull(usersJson); //test that the metadata got populated
 		User[] users = UsersUtil.convertJSONtoUsers(JSONdata);
 		assertNotNull(users); //that that users were found/populated
-		
+
 		//test limit and returns
 		assertEquals(usersJson.getLimit(), PASSED_LIMIT);
 		assertEquals(usersJson.getUsers().length, PASSED_LIMIT);
 		assertEquals(usersJson.getUsersCount(), PASSED_LIMIT);
-		
-		
+
+
 		//test	offset
 		assertEquals(usersJson.getOffset(), PASSED_OFFSET);
-		
+
 	}
 
 	/**
@@ -94,9 +94,9 @@ public class TestAll {
 
 	}
 
-  @AfterClass
-  public void afterClass() {
-	  //nothing to do here, URL connection closed as of the return of json data
-  }
+	@AfterClass
+	public void afterClass() {
+		//nothing to do here, URL connection closed as of the return of json data
+	}
 
 }
